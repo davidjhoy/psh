@@ -1,8 +1,12 @@
 import React from 'react'
+import styles from '../styles/CityButton.module.scss'
 
 const CityButton = () => {
+
+
+
   return (
-    <div>CityButton</div>
+    <div className = {styles.CityButton}>CityButton</div>
   )
 }
 

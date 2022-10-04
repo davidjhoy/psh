@@ -2,11 +2,11 @@ import Head from 'next/head'
 import Image from 'next/image';
 import CityButton from '../components/CityButton';
 
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.scss'
 
 export default function Home() {
 
-  //Use Effect Will Grab the Cities and store in state. Then we grab cities and render 
+  //Use Effect Will Grab the Cities and store in state. Then we grab cities and render CityButton componenets for each. 
 
 
   return (
