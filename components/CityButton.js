@@ -7,7 +7,12 @@ const CityButton = ({text}) => {
 
 
   return (
-    <div className = {styles.CityButton}>{text}</div>
+    
+    <div className = {styles.CityButton}>
+   
+        {text}
+    
+    </div>
   )
 }
 

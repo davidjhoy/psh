@@ -1,9 +1,10 @@
 import React from 'react'
-import styles from '../styles/Events.module.scss'
+import styles from '../../styles/Events.module.scss'
+import EventCard from '../../components/EventCard'
 
 const events = () => {
   return (
-    <div>
+    <div className = {styles.MainWrap}>
         <div>Arrow Button</div>
         <div className = {styles.VideoDiv}> 
             <video  className = {styles.VideoPlayer} autoPlay playsInline loop width = "1200" height = "600" type = "video/mp4">
@@ -11,12 +12,15 @@ const events = () => {
             </video>
         </div>
         <div className = {styles.ToggleTime}>
-            <div>
+            <div className = {styles.TimeButton}>
                 This Week
             </div>
-            <div>
+            <div className = {styles.TimeButton}>
                 Today
             </div>
+        </div>
+        <div className = {styles.EventGrid} >
+            <EventCard/>
         </div>
     </div>
   )
