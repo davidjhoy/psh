@@ -1,8 +1,23 @@
 .VideoDiv{
     width: 100vw;
-    height: 500px;
+    height: 650px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .VideoPlayer{
+    // width: 100%;
+    // position: fixed;
+    // border: 1pt solid white;
+    // transform: translateX(-10%);
+    // transform: translateY(-200px);
+    // bottom: 0;
+    // opacity: 0.6;
+    // filter: blur(100px);
+
     width: 1200px;
+    position: absolute;
+    mix-blend-mode: screen;
+    opacity: 0.9;
 }
