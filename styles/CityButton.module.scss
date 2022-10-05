@@ -1,11 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner&family=Nunito:wght@600&family=Quicksand:wght@300;400&display=swap');
+
+
+
 .CityButton{
-    border: 1pt solid #fecb00;
-    width: 400px;
-    height: 75px;
-    border-radius: 4px;
-    box-shadow: inset 0 0 0.5em,
-    0 0 0.5em;
+    border: 1pt solid #fc0;
+    width: 730px;
+    height: 114px;
+    border-radius: 9px;
+    box-shadow: 
+    0 0 15px -2px #fc0, 0px 0px 14px #fc0 inset;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: transparent;
+    font-family: 'Edu QLD Beginner', cursive;
+    font-family: 'Nunito', sans-serif;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    letter-spacing: 5px;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #fc0;
+
+    &:hover{
+        box-shadow: 
+    0 0 40px -2px #fc0, 0px 0px 14px #fc0 inset;
+    }
+
+    
 }
+
+.NearMe{
+    border: 1pt solid #fc0;
+    width: 730px;
+    height: 114px;
+    border-radius: 9px;
+    box-shadow: 
+    0 0 15px -2px #fc0, 0px 0px 14px #fc0 inset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    font-family: 'Edu QLD Beginner', cursive;
+    font-family: 'Nunito', sans-serif;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    letter-spacing: 6px;
+    font-size: 30px;
+    text-transform: uppercase;
+    color: #fc0;
+  }
