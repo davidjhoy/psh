@@ -1,16 +1,22 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styles from '../../styles/Events.module.scss'
 import EventCard from '../../components/EventCard'
 
 const events = () => {
+  
   return (
     <div className = {styles.MainWrap}>
-        <div>Arrow Button</div>
-        <div className = {styles.VideoDiv}> 
-            <video  className = {styles.VideoPlayer} autoPlay playsInline loop width = "1200" height = "600" type = "video/mp4">
-                <source src = "/wtw.mp4"></source>
-            </video>
+        <div className  = {styles.HeaderDiv}>
+          
+          <div className = {styles.BackButton}></div>
+
+          <div className = {styles.VideoDiv}> 
+              <video  className = {styles.VideoPlayer} autoPlay playsInline loop width = "1200" height = "600" type = "video/mp4">
+                  <source src = "/wtw.mp4"></source>
+              </video>
+          </div>
         </div>
+
         <div className = {styles.ToggleTime}>
             <div className = {styles.TimeButton}>
                 This Week
@@ -19,6 +25,7 @@ const events = () => {
                 Today
             </div>
         </div>
+
         <div className = {styles.EventGrid} >
             <EventCard/>
         </div>

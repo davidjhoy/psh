@@ -12,7 +12,17 @@ import { useEffect } from 'react';
 export default function Explore() {
 
   //Use Effect Will Grab the Cities and store in state. Then we grab cities and render CityButton componenets for each. 
-
+    const router = useRouter();
+    useEffect(()=>{
+        router.replace({
+            query: {
+            c: "popular",
+            t: "",
+            p: "1",
+            city: ""}
+        });
+    })
+    
   
   return (
     <div className={styles.container}>
@@ -28,15 +38,7 @@ export default function Explore() {
           <div className = {styles.CityHeader}> WHERE ARE YOU LOOKING FOR EXPERIENCES?</div>
           <div className = {styles.CityListWrap}>
           <Link
-          href={{
-            pathname: '/explore',
-            query: { 
-              c: "popular",
-              t: "",
-              p: "1",
-              city: ""
-           },
-          }}
+          href="/explore/miami"
         >
           <a>About us</a>
         </Link>

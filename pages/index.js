@@ -20,12 +20,6 @@ export default function Home() {
       <Link
           href={{
             pathname: '/explore',
-            query: { 
-              c: "popular",
-              t: "",
-              p: "1",
-              city: ""
-           },
           }}
         >
           <a>Thanks for the opportunity! To explore page</a>
