@@ -12,15 +12,11 @@ const handle = app.getRequestHandler()
 
 app.prepare().then(() => {
 
-
   const server = express()
   server.use(express.json())
 //   const eventsRouter = require('./routes/events')
 //   server.use('/v1/events', eventsRouter)
 
-
-  
-  
 
   mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true }).then(
     () => {console.log("Succesfully connected to MongoDB")},
@@ -28,6 +24,7 @@ app.prepare().then(() => {
   )
 
   const connection = mongoose.connection
+ 
  
 
 
@@ -44,6 +41,10 @@ app.prepare().then(() => {
             });
     // res.end("Hello")
             
+  })
+
+  server.all('*', (req, res) => {
+    return handle(req, res)
   })
  
 
