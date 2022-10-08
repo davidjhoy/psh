@@ -1,14 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner&family=Nunito:wght@600&family=Quicksand:wght@300;400&display=swap');
 
 
+@mixin inline-animation($duration) {
+  $name: inline-#{unique-id()};
+
+  @keyframes #{$name} {
+    @content;
+  }
+
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+ 
+}
+
 
 .CityButton{
-    border: 1pt solid #fc0;
+    // border: 1pt solid #fc0;
     width: 730px;
     height: 114px;
     border-radius: 9px;
-    box-shadow: 
-    0 0 15px -2px #fc0, 0px 0px 14px #fc0 inset;
+    // box-shadow: 
+    // 0 0 15px -2px #fc0, 0px 0px 14px #fc0 inset;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,22 +36,40 @@
     font-size: 20px;
     text-transform: uppercase;
     color: #fc0;
+    transition: 0.2s;
+    opacity: 0;
+    
 
-    &:hover{
-        box-shadow: 
-    0 0 40px -2px #fc0, 0px 0px 14px #fc0 inset;
+   
+    @include inline-animation(1.5s){
+
+        from{
+            transform: translateY(200px);
+            opacity: 0;
+        }
+        to{
+            transform: translateY(0px);
+            opacity: 1;
+        }
     }
+  
 
     
+
+    // &:hover{
+    //     box-shadow: 
+    // 0 0 40px -2px #fc0, 0px 0px 14px #fc0 inset;
+    // }
+
+
 }
 
 .NearMe{
-    border: 1pt solid #fc0;
+    
     width: 730px;
     height: 114px;
     border-radius: 9px;
-    box-shadow: 
-    0 0 15px -2px #fc0, 0px 0px 14px #fc0 inset;
+    
     display: flex;
     align-items: center;
     justify-content: center;

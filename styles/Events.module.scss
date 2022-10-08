@@ -82,6 +82,10 @@
 }
 
 .TimeButton{
+    
+  
+
+    z-index: 2;
     width: auto;
     height: 39px;
     box-sizing: border-box;
@@ -96,8 +100,31 @@
     color: #fc0;
     cursor: pointer;
     padding: 8px 30px;
+    outline: none;
+    
+    
 
+}
 
+.TimeButtonSelected{
+    z-index: 2;
+    width: auto;
+    height: 39px;
+    box-sizing: border-box;
+    border: 1pt solid #7a7b7d;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    font-family: Nunito;
+    font-size: 10pt;
+    color: #7a7b7d;
+    cursor: pointer;
+    padding: 8px 30px;
+    -webkit-tap-highlight-color: transparent;
+    
+    
 }
 
 
@@ -173,8 +200,13 @@
 
 .eventDate{
     
+    font-weight: 700;
+    font-size: 18pt;
+    color: #fff;
+    align-self: center;
     border-right: rgba(255,255,255,.4666666667) 1px solid;
     padding-right: 15px;
+    text-transform: uppercase;
     margin-right: 10px;
 }
 
