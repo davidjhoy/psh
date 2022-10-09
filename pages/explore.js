@@ -4,28 +4,40 @@ import CityButton from '../components/CityButton';
 import {useRouter} from 'next/router';
 import styles from '../styles/Home.module.scss'
 import { useEffect, useState } from 'react';
-
-
-
   
 export default function Explore() {
   const [events, setEvents] = useState(""); 
   const [coordinates, setCoordinates] = useState([]);
   const [cities, setCities] = useState(new Set());
   const [isLoading, setIsLoading] = useState(true);
-
+  const router = useRouter();
+  let {query} = useRouter()
  
-  //Use Effect Will Grab the Cities and store in state. Then we grab cities and render CityButton componenets for each. 
-    const router = useRouter();
-    // useEffect(()=>{
-    //     router.replace({
-    //         query: {
-    //         c: "popular",
-    //         t: "",
-    //         p: "1",
-    //         city: ""}
-    //     });
-    // })
+  useEffect(()=>{
+        router.replace({
+         query: {
+         c: "popular",
+         t: "",
+         p: "1",
+         city: ""}
+     });
+
+   setEvents("")
+   fetch('/v1/events')
+   .then((res) => res.json())
+   .then((json) => {
+       handleEvents(json)
+      
+   })
+   .then(() => setIsLoading(false))
+   .catch(error => {
+       console.log(error)
+   
+   })
+ }
+   
+
+,[])
 
   const handleEvents = (events) =>{
 
@@ -34,8 +46,6 @@ export default function Explore() {
       let coordinateArray = events.map((event)=>{
         const Lat = event.location.coordinates[1]
         const Long = event.location.coordinates[0]
-        
-
         return [Lat, Long]
        
       })
@@ -44,7 +54,6 @@ export default function Explore() {
       fetchCityNamesFromUniqueCoordinates(uniqueCoordinates)
       
   }
-
 
   const filterEventCoordinates = (coordinateArray) => {
    
@@ -75,62 +84,34 @@ export default function Explore() {
       })
   }
 
-  console.log(cities)
-
-  function renderCities (cities){
-    
-    //Can't map over a set so I need to convert the cities Set into an array. 
+  const renderCities = (cities) =>{
+   
+    //Can't map over a Set so I need to convert the cities Set into an array. 
     let cityArr = [...cities];
     if (cityArr.length > 0){
       cityArr.push("Near Me")
     }
-    
-
-   
     return (
         //Something I learned doing this, map function provides an index value
         cityArr.map((city, index)=>{
-          
+        
+        let handleClick = () => {router.push({query: {
+          c: "popular",
+         t: "",
+         p: "1",
+         city: city
+        }})}
           return(
             //So I can use
-            <CityButton text = {city} childNumber = {index} key = {city} />
+            <CityButton text = {city} childNumber = {index} key = {city} handleClick = {handleClick}/>
             
           )
-          
-         
         })
-        
-        
-        
     )
-        
-
- 
   }
 
-
- 
- 
-  useEffect(()=>{
-      
-      setEvents("")
-      fetch('/v1/events')
-      .then((res) => res.json())
-      .then((json) => {
-          handleEvents(json)
-         
-      })
-      .then(() => setIsLoading(false))
-      
-      
-      .catch(error => {
-          console.log(error)
-      
-      })
-    }
-      
-
-  ,[])
+  
+  
   
   return (
     <div className={styles.container}>
