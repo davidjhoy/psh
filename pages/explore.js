@@ -1,11 +1,13 @@
 import Head from 'next/head'
 import Image from 'next/image';
+import CityPage from '../components/CityPage';
 import CityButton from '../components/CityButton';
 import {useRouter} from 'next/router';
 import styles from '../styles/Home.module.scss'
 import { useEffect, useState } from 'react';
   
 export default function Explore() {
+  const [renderCityPage, setRenderCityPage] = useState(false);
   const [events, setEvents] = useState(""); 
   const [coordinates, setCoordinates] = useState([]);
   const [cities, setCities] = useState(new Set());
@@ -100,7 +102,9 @@ export default function Explore() {
          t: "",
          p: "1",
          city: city
-        }})}
+        }})
+        setRenderCityPage(!renderCityPage)
+      }
           return(
             //So I can use
             <CityButton text = {city} childNumber = {index} key = {city} handleClick = {handleClick}/>
@@ -114,6 +118,13 @@ export default function Explore() {
   
   
   return (
+    <>  
+    
+    {renderCityPage ? 
+    
+    <CityPage events = {events} togglePage = {setRenderCityPage} pageState = {renderCityPage}/>
+    :
+
     <div className={styles.container}>
       <Head>
         <title>wtw?</title>
@@ -132,5 +143,9 @@ export default function Explore() {
           </div>
         </div>
     </div>
+
+    
+    }
+    </>
   )
 }
