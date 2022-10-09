@@ -1,23 +1,31 @@
-import React, {useState, useEffect} from 'react'
-import styles from '../styles/Events.module.scss'
-import EventCard from '../components/EventCard'
+import React, {useState, useEffect} from 'react';
+import styles from '../styles/Events.module.scss';
+import EventCard from '../components/EventCard';
+import Loading from '../components/Loading';
 import { FiArrowLeft } from "react-icons/fi";
 
 const events = () => {
-    const [events, setEvents] = useState()
-    const [timeFrame, setTimeFrame] = useState("Week")
-    const today = new Date()
-    const todayDay = today.getDay()
+    const [events, setEvents] = useState();
+    const [timeFrame, setTimeFrame] = useState("Week");
+    const today = new Date();
+    const todayDay = today.getDay();
 
     const handleEvents = (events) =>{
         setEvents(events)
     }
 
     useEffect(()=>{
+        setEvents("")
         fetch('/v1/events')
         .then((res) => res.json())
-        .then((json) => handleEvents(json))
-        .catch(error => {console.log(error)})
+        .then((json) => {
+            handleEvents(json)
+            
+        })
+        .catch(error => {
+            console.log(error)
+        
+        })
 
     },[])
 
@@ -79,10 +87,11 @@ const events = () => {
                 Today
             </div>
         </div>
-
+        
         <div className = {styles.EventGrid} >
-            {events? renderEvents(events): <h3>Loading</h3>}
+            {events? renderEvents(events): <div></div>}
         </div>
+        <Loading/>
     </div>
   )
 }

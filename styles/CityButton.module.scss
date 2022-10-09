@@ -36,12 +36,12 @@
     font-size: 20px;
     text-transform: uppercase;
     color: #fc0;
-    transition: 0.2s;
+    // transition: 0.2s;
     opacity: 0;
     
 
    
-    @include inline-animation(1.5s){
+    @include inline-animation(2s){
 
         from{
             transform: translateY(200px);
