@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 export default function Explore() {
   const [renderCityPage, setRenderCityPage] = useState(false);
   const [events, setEvents] = useState(""); 
-  const [coordinates, setCoordinates] = useState([]);
+  const [cityToCoordinateObject, setCityToCoordinateObject] = useState({});
   const [cities, setCities] = useState(new Set());
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -61,7 +61,6 @@ export default function Explore() {
    
       return( Array.from(
         new Map(coordinateArray.map((c) => [c.join(), c])).values()
-
       ))
   }
 
@@ -70,15 +69,19 @@ export default function Explore() {
       const requestOptions = {
         method: 'GET',
       };
-
-      uniqueCoordinates.forEach((coordinate) => {
+      
+      uniqueCoordinates.forEach((coordinate, index) => {
         //Iterate over each unique coordinate and make a fetch for the city name 
         fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&apiKey=${process.env.NEXT_PUBLIC_GEOCODE_API}`, requestOptions)
           .then(response => response.json())
           .then(result => {
-            console.log('fetch')
+           
             const city = result.features[0].properties.city
             setCities(cities => new Set([...cities, city]))
+            
+            cityToCoordinateObject[city] = [[coordinate[1], coordinate[0]]]
+            
+            
             
           })
           .catch(error => console.log('error', error))
@@ -117,12 +120,13 @@ export default function Explore() {
   
   
   
+  
   return (
     <>  
     
     {renderCityPage ? 
     
-    <CityPage events = {events} togglePage = {setRenderCityPage} pageState = {renderCityPage}/>
+    <CityPage events = {events} togglePage = {setRenderCityPage} pageState = {renderCityPage} cityToCoordinateObject = {cityToCoordinateObject} city = {query.city}/>
     :
 
     <div className={styles.container}>

@@ -3,19 +3,26 @@ import styles from '../styles/Events.module.scss';
 import EventCard from '../components/EventCard';
 import Loading from '../components/Loading';
 import { FiArrowLeft } from "react-icons/fi";
+import { useRouter } from 'next/router';
 
-const CityPage = ({events, togglePage, pageState}) => {
-    
+const CityPage = ({events, togglePage, pageState, cityToCoordinateObject, city}) => {
+    const [currentCity, setCurrentCity] = useState("");
     const [timeFrame, setTimeFrame] = useState("Week");
     const today = new Date();
     const todayDay = today.getDay();
-    const renderEvents = (events) =>{
+    const {query} = useRouter();
+
+
+    //Need to filter by city !
         
             if (timeFrame == "Today"){
                 return (
                     events.map((event)=>{
+                        const Lat = event.location.coordinates[1]
+                        const Long = event.location.coordinates[0]
                         const date = new Date(event.startUtc)
                         const eventDay = date.getDay()
+                       
                         if (todayDay == eventDay){
                             return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today}/>
                         }
@@ -27,7 +34,15 @@ const CityPage = ({events, togglePage, pageState}) => {
             }else{
                 return(
                     events.map((event)=>{
-                        return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today}/>
+                        const Lat = event.location.coordinates[1]
+                        const Long = event.location.coordinates[0]
+                        console.log(JSON.stringify(cityToCoordinateObject[city]).includes(JSON.stringify([Long, Lat])))
+                         
+                                return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today}/>
+                        
+                            
+                            
+                        
                     })
                 )
                 
@@ -37,6 +52,8 @@ const CityPage = ({events, togglePage, pageState}) => {
           
         
     }
+
+
 
    
 
