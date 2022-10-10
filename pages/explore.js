@@ -9,7 +9,8 @@ import { useEffect, useState } from 'react';
 export default function Explore() {
   const [renderCityPage, setRenderCityPage] = useState(false);
   const [events, setEvents] = useState(""); 
-  const [cityToCoordinateObject, setCityToCoordinateObject] = useState({});
+  const [eventsByCity, setEventsByCity] = useState({});
+  const [cityToCoordinateArray, setCityToCoordinateArray] = useState([]);
   const [cities, setCities] = useState(new Set());
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
@@ -53,7 +54,9 @@ export default function Explore() {
       })
 
       let uniqueCoordinates = filterEventCoordinates(coordinateArray)
-      fetchCityNamesFromUniqueCoordinates(uniqueCoordinates)
+      let fetchReturn = fetchCityNamesFromUniqueCoordinates(uniqueCoordinates)
+      filterEventsByCity(events, fetchReturn)
+      
       
   }
 
@@ -70,29 +73,69 @@ export default function Explore() {
         method: 'GET',
       };
       
+
+      setCityToCoordinateArray([])
+      
+     
       uniqueCoordinates.forEach((coordinate, index) => {
         //Iterate over each unique coordinate and make a fetch for the city name 
         fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&apiKey=${process.env.NEXT_PUBLIC_GEOCODE_API}`, requestOptions)
           .then(response => response.json())
           .then(result => {
-           
             const city = result.features[0].properties.city
             setCities(cities => new Set([...cities, city]))
             
-            cityToCoordinateObject[city] = [[coordinate[1], coordinate[0]]]
-            
-            
+            //Rather than make a fetch for each event, I will create an array that matches each unique coordinate to a city
+            setCityToCoordinateArray(cityToCoordinateArray => [...cityToCoordinateArray, [coordinate[1], coordinate[0], city]])
+           
             
           })
           .catch(error => console.log('error', error))
           
       })
+
+    
+   
+
+      
+
+
+  }
+
+  const filterEventsByCity = (events) =>{
+    const newCityToCoordinateObject = {}
+    const newEventsByCityObject = {}
+   
+    cityToCoordinateArray.forEach((arr)=>{
+      newCityToCoordinateObject[[arr[1], arr[0]]] = arr[2]
+      
+    })
+    
+    cities.forEach((city) =>{
+      newEventsByCityObject[city] = []
+     
+    })
+
+
+   
+    events.map((event)=>{
+        const Lat = event.location.coordinates[1]
+        const Long = event.location.coordinates[0]
+        const eventCity = newCityToCoordinateObject[[Lat, Long]]
+        newEventsByCityObject[eventCity].push(event)
+        
+        
+      })
+    
+
+    setEventsByCity(newEventsByCityObject)
   }
 
   const renderCities = (cities) =>{
    
     //Can't map over a Set so I need to convert the cities Set into an array. 
     let cityArr = [...cities];
+    //Was having some issues with the "Near Me" Button loading first so I decided to add it here after the other buttons have been added to the city set
     if (cityArr.length > 0){
       cityArr.push("Near Me")
     }
@@ -116,17 +159,15 @@ export default function Explore() {
         })
     )
   }
+  
 
-  
-  
-  
-  
+
   return (
     <>  
     
     {renderCityPage ? 
     
-    <CityPage events = {events} togglePage = {setRenderCityPage} pageState = {renderCityPage} cityToCoordinateObject = {cityToCoordinateObject} city = {query.city}/>
+    <CityPage events = {eventsByCity} togglePage = {setRenderCityPage} pageState = {renderCityPage}  city = {query.city}/>
     :
 
     <div className={styles.container}>

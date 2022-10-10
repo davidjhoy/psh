@@ -5,21 +5,18 @@ import Loading from '../components/Loading';
 import { FiArrowLeft } from "react-icons/fi";
 import { useRouter } from 'next/router';
 
-const CityPage = ({events, togglePage, pageState, cityToCoordinateObject, city}) => {
-    const [currentCity, setCurrentCity] = useState("");
+const CityPage = ({events, togglePage, pageState, city}) => {
     const [timeFrame, setTimeFrame] = useState("Week");
     const today = new Date();
     const todayDay = today.getDay();
-    const {query} = useRouter();
 
 
-    //Need to filter by city !
+const renderEvents = (events) => {
         
             if (timeFrame == "Today"){
                 return (
-                    events.map((event)=>{
-                        const Lat = event.location.coordinates[1]
-                        const Long = event.location.coordinates[0]
+                    events[`${city}`].map((event)=>{
+                       
                         const date = new Date(event.startUtc)
                         const eventDay = date.getDay()
                        
@@ -29,14 +26,15 @@ const CityPage = ({events, togglePage, pageState, cityToCoordinateObject, city})
                         
                     })
                 )
+            
         //This is assuming that we are retrieving weekly events 
 
             }else{
                 return(
-                    events.map((event)=>{
+                    events[`${city}`].map((event)=>{
                         const Lat = event.location.coordinates[1]
                         const Long = event.location.coordinates[0]
-                        console.log(JSON.stringify(cityToCoordinateObject[city]).includes(JSON.stringify([Long, Lat])))
+                        
                          
                                 return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today}/>
                         
@@ -49,9 +47,10 @@ const CityPage = ({events, togglePage, pageState, cityToCoordinateObject, city})
             }
         
            
+            
           
-        
-    }
+}
+    
 
 
 
@@ -91,6 +90,6 @@ const CityPage = ({events, togglePage, pageState, cityToCoordinateObject, city})
         <Loading/>
     </div>
   )
-}
 
+  }
 export default CityPage
