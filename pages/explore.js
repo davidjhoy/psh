@@ -79,7 +79,7 @@ export default function Explore() {
      
       uniqueCoordinates.forEach((coordinate, index) => {
         //Iterate over each unique coordinate and make a fetch for the city name 
-        fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&apiKey=${process.env.NEXT_PUBLIC_GEOCODE_API}`, requestOptions)
+     fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&apiKey=${process.env.NEXT_PUBLIC_GEOCODE_API}`, requestOptions)
           .then(response => response.json())
           .then(result => {
             const city = result.features[0].properties.city

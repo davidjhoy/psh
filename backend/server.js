@@ -6,29 +6,27 @@ const port = process.env.PORT || 3000
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })
 const handle = app.getRequestHandler()
+const db = require('./db')
+
 
 
 
 
 app.prepare().then(() => {
 
-  const server = express()
+  const server = express()   
   server.use(express.json())
-//   const eventsRouter = require('./routes/events')
-//   server.use('/v1/events', eventsRouter)
+  const cityEventsRouter = require('./routes/cityEvents')
+  server.use('/cityEvents', cityEventsRouter)
 
+  db.connectToDB()
+  const connection = db.getConnection()
+  // mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true }).then(
+  //   () => {console.log("Succesfully connected to MongoDB")},
+  //   err => {console.log(err)}
+  // )
 
-  mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true }).then(
-    () => {console.log("Succesfully connected to MongoDB")},
-    err => {console.log(err)}
-  )
-
-  const connection = mongoose.connection
- 
- 
-
-
-  
+  // const connection = mongoose.connection
 
   server.get('/v1/events',  (req, res) =>{
          const collection  = connection.db.collection("events");
