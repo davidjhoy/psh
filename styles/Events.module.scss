@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner&family=Nunito:wght@200&family=Quicksand:wght@300;400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner&family=Nunito:wght@700&family=Quicksand:wght@300;400&display=swap');
 
+$poshColor: #fc0;
+
 @mixin inline-animation($duration) {
     $name: inline-#{unique-id()};
   
@@ -15,6 +17,12 @@
     animation-fill-mode: forwards;
     
    
+  }
+
+  @mixin usualFlex  {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
 
@@ -40,9 +48,7 @@
     position: absolute;
     width: 50px;
     height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include usualFlex();
     margin-left: 150px;
     background-color: #8a8a8a;
     transform: translateY(50px);
@@ -52,9 +58,7 @@
 .VideoDiv{
     width: 100vw;
     height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include usualFlex();
     background-color: black;
     
     
@@ -72,17 +76,8 @@
 }
 
 .VideoPlayer2{
-    // width: 100%;
-    // position: fixed;
-    // border: 1pt solid white;
-    // transform: translateX(-10%);
-    // transform: translateY(-200px);
-    // bottom: 0;
-    
-    // filter: blur(100px);
     mix-blend-mode: screen;
     width: 1200px;
-
     position: absolute;
     opacity: 0.9;
 }
@@ -106,15 +101,13 @@
     width: auto;
     height: 39px;
     box-sizing: border-box;
-    border: 1pt solid #fc0;
+    border: 1pt solid $poshColor;
     border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include usualFlex();
     text-transform: uppercase;
     font-family: Nunito;
     font-size: 10pt;
-    color: #fc0;
+    color: $poshColor;
     cursor: pointer;
     padding: 8px 30px;
     outline: none;
@@ -130,9 +123,7 @@
     box-sizing: border-box;
     border: 1pt solid #7a7b7d;
     border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include usualFlex();
     text-transform: uppercase;
     font-family: Nunito;
     font-size: 10pt;
@@ -147,12 +138,44 @@
 
 .EventGrid{
     width: 90%;
-   
     height: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
+    
    
 }
+@media (min-width: 0px) and (max-width: 560px){
+    .EventGrid{
+        grid-template-columns: repea(1, 1fr);
+    }
+    
+};
+@media (min-width: 561px) and (max-width: 1000px){
+    .EventGrid{
+        grid-template-columns: repeat(2, 1fr);
+    }
+  
+};
+@media (min-width: 1001px) and (max-width: 1400px){
+    .EventGrid{
+        grid-template-columns: repeat(3, 1fr);
+    }
+   
+    
+}
+@media (min-width: 1401px) and (max-width: 1800px){
+    .EventGrid{
+        grid-template-columns: repeat(4, 1fr);
+    }
+  
+};
+@media (min-width: 1801px) and (max-width: 2100px){
+    .EventGrid{
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    
+};
 
 .EventCard{
     background-color: white;
@@ -273,10 +296,8 @@
     top: 30%;
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
+    @include usualFlex();
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     gap: 20px 20px;
     
 
@@ -284,37 +305,8 @@
 }
 
 .LoadingHeader{
-    color:#fc0;
+    color: $poshColor;
     font-family: Nunito;
 }
 
 
-
-// @media (max-width: 576){
-//     .EventGrid{
-//         grid-template-columns: repeat(1, 1fr);
-//     }
-// }
-// @media only screen and (max-width: 1000){
-//     .EventGrid{
-//         grid-template-columns: repeat(2, 1fr);
-//     }
-// }
-
-// @media only screen and (max-width: 1400){
-//     .EventGrid{
-//         grid-template-columns: repeat(3, 1fr);
-//     }
-// }
-
-// @media only screen and (max-width: 1800){
-//     .EventGrid{
-//         grid-template-columns: repeat(4, 1fr);
-//     }
-// }
-
-// @media only screen and (max-width: 2100){
-//     .EventGrid{
-//         grid-template-columns: repeat(5, 1fr);
-//     }
-// }
