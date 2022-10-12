@@ -1,168 +1,182 @@
-import Head from 'next/head'
-import CityPage from '../components/CityPage';
-import CityButton from '../components/CityButton';
-import {useRouter} from 'next/router';
-import styles from '../styles/Home.module.scss'
-import { useEffect, useState } from 'react';
-import Snow from '../components/Confetti';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import CityButton from "../components/CityButton";
+import CityPage from "../components/CityPage";
+import Snow from "../components/Confetti";
+import styles from "../styles/Home.module.scss";
 
-  
 export default function Explore() {
-  const [renderCityPage, setRenderCityPage] = useState(false);
-  const [nearMeEvents, setNearMeEvents] = useState()
-  const [isLoading, setIsLoading] = useState(true);
-  const {query} = useRouter();
-  const router = useRouter();
   const [events, setEvents] = useState();
   const [geoLocationBool, setGeolocationBool] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  const [nearMeEvents, setNearMeEvents] = useState();
+  const { query } = useRouter();
+  const [renderCityPage, setRenderCityPage] = useState(false);
+  const router = useRouter();
  
-  useEffect(()=>{
-        router.replace({
-         query: {
-         c: "popular",
-         t: "",
-         p: "1",
-         city: ""}
-     });
 
-    fetch('/cityEvents')
-    .then((res) => res.json())
-    .then((json)=> setEvents(json))
-    .then(()=>setIsLoading(false))
-    .catch(error => {console.log(error)})
-    
-    navigator.geolocation.getCurrentPosition(function(position){
-            const longitude = position.coords.longitude
-            const latitude = position.coords.latitude
-            fetch(`/coordEvents?` + new URLSearchParams({
-              latitude: latitude,
-              longitude: longitude
-            }))
-            .then(response => response.json())
-            .then(result => {setNearMeEvents(result)})
-            
-  })
+  useEffect(() => {
+    router.replace({
+      query: {
+        c: "popular",
+        t: "",
+        p: "1",
+        city: "",
+      },
+    });
 
+    fetch("/cityEvents")
+      .then((res) => res.json())
+      .then((json) => setEvents(json))
+      .then(() => setIsLoading(false))
+      .catch((error) => {
+        console.log(error);
+      });
 
-  navigator.permissions && navigator.permissions.query({name: 'geolocation'})
-  .then(function(PermissionStatus) {
-      if (PermissionStatus.state == 'granted') {
-            setGeolocationBool(true)
-      } else {
-           setGeolocationBool(false)
-      }
-  })
-  
+    navigator.geolocation.getCurrentPosition(function (position) {
+      const longitude = position.coords.longitude;
+      const latitude = position.coords.latitude;
+      fetch(
+        `/coordEvents?` +
+          new URLSearchParams({
+            latitude: latitude,
+            longitude: longitude,
+          })
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          setNearMeEvents(result);
+        });
+    });
 
-  
- }
-,[])
+    navigator.permissions &&
+      navigator.permissions
+        .query({ name: "geolocation" })
+        .then(function (PermissionStatus) {
+          if (PermissionStatus.state == "granted") {
+            setGeolocationBool(true);
+          } else {
+            setGeolocationBool(false);
+          }
+        });
+  }, []);
 
-  const renderCities = () =>{
-    let cities = Object.keys(events)
-    let cityArr = [...new Set(cities)]
-    if (cityArr.length > 0){
-      cityArr.push("Near Me")
+  const renderCities = () => {
+    let cities = Object.keys(events);
+    let cityArr = [...new Set(cities)];
+    if (cityArr.length > 0) {
+      cityArr.push("Near Me");
     }
     return (
-        //Something I learned doing this, map function provides an index value
-        cityArr.map((city, index)=>{
-        
-        let handleClick = () => {router.push({query: {
-          c: "popular",
-         t: "",
-         p: "1",
-         city: city
-        }})
-        setRenderCityPage(!renderCityPage)
-          }
-          return(<CityButton text = {city} childNumber = {index} key = {city} handleClick = {handleClick}/>)
-          }
-        )
-      )
-  }
+      // Something I learned doing this, map function provides an index value
+      cityArr.map((city, index) => {
+        let handleClick = () => {
+          router.push({
+            query: {
+              c: "popular",
+              t: "",
+              p: "1",
+              city: city,
+            },
+          });
+          setRenderCityPage(!renderCityPage);
+        };
+        return (
+          <CityButton
+            text={city}
+            childNumber={index}
+            key={city}
+            handleClick={handleClick}
+          />
+        );
+      })
+    );
+  };
 
   return (
-    <>  
-    {renderCityPage ? 
-    <CityPage togglePage = {setRenderCityPage} pageState = {renderCityPage} events = {query.city == "Near Me" ? nearMeEvents : events[query.city]} geoOn = {geoLocationBool}/>
-    :
-    <div className={styles.container}>
-      <Snow />
-      <Head>
-        <title>wtw?</title>
-        <meta name="plz hr me" content="Generated by create next app" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-        <div className = {styles.CityClassContainer}>
-          <div className = {styles.CityHeader}> WHERE ARE YOU LOOKING FOR EXPERIENCES?</div>
-          <div className = {styles.CityListWrap}>
-         
-            {isLoading ? <div></div>   : renderCities()}
-          
+    <>
+      {renderCityPage ? (
+        <CityPage
+          togglePage={setRenderCityPage}
+          pageState={renderCityPage}
+          events={query.city == "Near Me" ? nearMeEvents : events[query.city]}
+          geoOn={geoLocationBool}
+        />
+      ) : (
+        <div className={styles.container}>
+          <Snow />
+          <Head>
+            <title>wtw?</title>
+            <meta name="plz hr me" content="Generated by create next app" />
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <div className={styles.CityClassContainer}>
+            <div className={styles.CityHeader}>
+              {" "}
+              WHERE ARE YOU LOOKING FOR EXPERIENCES?
+            </div>
+            <div className={styles.CityListWrap}>
+              {isLoading ? <div></div> : renderCities()}
+            </div>
           </div>
         </div>
-    </div>
-    }
+      )}
     </>
-  )
+  );
 }
 
 
+// This was the code I used when I was trying to handle everything on the fronend. Things a lot easier after I used mongoose to structure the events data into an object
+// with cities as keys and events as values.
 
 
-//
-//This was the code I used when I was trying to handle everything on the fronend. Things a lot easier after I used mongoose to structure the events data into an object
-// with cities as keys and events as values. 
 // const [eventsByCity, setEventsByCity] = useState({});
-  // const [cityToCoordinateArray, setCityToCoordinateArray] = useState([]);
-  // const [exploreEvents, setExploreEvents] = useState(""); 
-  // const [cities, setCities] = useState();
+// const [cityToCoordinateArray, setCityToCoordinateArray] = useState([]);
+// const [exploreEvents, setExploreEvents] = useState("");
+// const [cities, setCities] = useState();
 
- // const handleEvents = (events) =>{
-  //     setEvents(events)
-      
+// const handleEvents = (events) =>{
+//     setEvents(events)
 
-      // setCities(events.keys())
-      // console.log(events)
-  //     let coordinateArray = events.map((event)=>{
-  //       const Lat = event.location.coordinates[1]
-  //       const Long = event.location.coordinates[0]
-  //       return [Lat, Long]
-  //     })
-  //     let uniqueCoordinates = filterEventCoordinates(coordinateArray)
-  //     fetchCityNamesFromUniqueCoordinates(uniqueCoordinates)
-      
-  // }
+// setCities(events.keys())
+//     let coordinateArray = events.map((event)=>{
+//       const Lat = event.location.coordinates[1]
+//       const Long = event.location.coordinates[0]
+//       return [Lat, Long]
+//     })
+//     let uniqueCoordinates = filterEventCoordinates(coordinateArray)
+//     fetchCityNamesFromUniqueCoordinates(uniqueCoordinates)
 
-  // const filterEventCoordinates = (coordinateArray) => {
-   
-  //     return( Array.from(
-  //       new Map(coordinateArray.map((c) => [c.join(), c])).values()
-  //     ))
-  // }
+// }
 
-  // const fetchCityNamesFromUniqueCoordinates = (uniqueCoordinates) => {
+// const filterEventCoordinates = (coordinateArray) => {
 
-  //     const requestOptions = {
-  //       method: 'GET',
-  //     };
-  //     // setCityToCoordinateArray([])
-  //     uniqueCoordinates.forEach((coordinate, index) => {
-  //       //Iterate over each unique coordinate and make a fetch for the city name 
-  //    fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&apiKey=${process.env.NEXT_PUBLIC_GEOCODE_API}`, requestOptions)
-  //         .then(response => response.json())
-  //         .then(result => {
-  //           const city = result.features[0].properties.city
-  //           setCities(cities => new Set([...cities, city]))
-            
-  //           //Rather than make a fetch for each event, I will create an array that matches each unique coordinate to a city
-  //           // setCityToCoordinateArray(cityToCoordinateArray => [...cityToCoordinateArray, [coordinate[1], coordinate[0], city]])
-           
-            
-  //         })
-  //         .catch(error => console.log('error', error))
-          
-  //     })
+//     return( Array.from(
+//       new Map(coordinateArray.map((c) => [c.join(), c])).values()
+//     ))
+// }
 
-  // }
+// const fetchCityNamesFromUniqueCoordinates = (uniqueCoordinates) => {
+
+//     const requestOptions = {
+//       method: 'GET',
+//     };
+//     // setCityToCoordinateArray([])
+//     uniqueCoordinates.forEach((coordinate, index) => {
+//       //Iterate over each unique coordinate and make a fetch for the city name
+//    fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&apiKey=${process.env.NEXT_PUBLIC_GEOCODE_API}`, requestOptions)
+//         .then(response => response.json())
+//         .then(result => {
+//           const city = result.features[0].properties.city
+//           setCities(cities => new Set([...cities, city]))
+
+//           //Rather than make a fetch for each event, I will create an array that matches each unique coordinate to a city
+//           // setCityToCoordinateArray(cityToCoordinateArray => [...cityToCoordinateArray, [coordinate[1], coordinate[0], city]])
+
+//         })
+//         .catch(error => console.log('error', error))
+
+//     })
+
+// }

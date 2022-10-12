@@ -7,7 +7,7 @@ const canvasStyles = {
   width: "100%",
   height: "100%",
   top: 0,
-  left: 0
+  left: 0,
 };
 
 function randomInRange(min, max) {
@@ -22,12 +22,12 @@ function getAnimationSettings(angle, originX) {
     gravity: 1.5,
     origin: {
       x: Math.random(),
-      y: Math.random() * 0.999 - 0.9
+      y: Math.random() * 0.999 - 0.9,
     },
     colors: ["#fc0"],
     shapes: ["circle", "square"],
     scalar: randomInRange(0.9, 1.4),
-    drift: 1.3
+    drift: 1.3,
   };
 }
 
@@ -46,16 +46,12 @@ export default function Snow() {
     }
   }, []);
 
-  const startAnimation = useCallback(() => {
-    
-  }, [nextTickAnimation, intervalId]);
-
- 
+  const startAnimation = useCallback(() => {}, [nextTickAnimation, intervalId]);
 
   useEffect(() => {
     if (!intervalId) {
-        setIntervalId(setInterval(nextTickAnimation, 16));
-      }
+      setIntervalId(setInterval(nextTickAnimation, 16));
+    }
     return () => {
       clearInterval(intervalId);
     };
@@ -63,7 +59,6 @@ export default function Snow() {
 
   return (
     <>
-      
       <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
     </>
   );

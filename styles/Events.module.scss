@@ -1,312 +1,251 @@
-@import url('https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner&family=Nunito:wght@200&family=Quicksand:wght@300;400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner&family=Nunito:wght@700&family=Quicksand:wght@300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner&family=Nunito:wght@200&family=Quicksand:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner&family=Nunito:wght@700&family=Quicksand:wght@300;400&display=swap");
 
 $poshColor: #fc0;
 
 @mixin inline-animation($duration) {
-    $name: inline-#{unique-id()};
-  
-    @keyframes #{$name} {
-      @content;
-    }
-  
-    animation-name: $name;
-    animation-duration: $duration;
-    animation-iteration-count: 1;
-    animation-timing-function: ease;
-    animation-fill-mode: forwards;
-    
-   
+  $name: inline-#{unique-id()};
+
+  @keyframes #{$name} {
+    @content;
   }
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+}
 
-  @mixin usualFlex  {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+@mixin usualFlex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.MainWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+}
+.HeaderDiv {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background-color: black;
+}
+
+.BackButton {
+  z-index: 2;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  @include usualFlex();
+  margin-left: 150px;
+  background-color: #8a8a8a;
+  transform: translateY(50px);
+  border-radius: 50%;
+}
+
+.VideoDiv {
+  width: 100vw;
+  height: 300px;
+  @include usualFlex();
+  background-color: black;
+}
+
+.VideoPlayer1 {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  opacity: 0.6;
+  filter: blur(100px);
+}
+
+.VideoPlayer2 {
+  mix-blend-mode: screen;
+  width: 1200px;
+  position: absolute;
+  opacity: 0.9;
+}
+
+.ToggleTime {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  height: auto;
+  padding-left: 10px;
+  margin-bottom: 15px;
+}
+
+.TimeButton {
+  z-index: 2;
+  width: auto;
+  height: 39px;
+  box-sizing: border-box;
+  border: 1pt solid $poshColor;
+  border-radius: 25px;
+  @include usualFlex();
+  text-transform: uppercase;
+  font-family: Nunito;
+  font-size: 10pt;
+  color: $poshColor;
+  cursor: pointer;
+  padding: 8px 30px;
+  outline: none;
+}
+
+.TimeButtonSelected {
+  z-index: 2;
+  width: auto;
+  height: 39px;
+  box-sizing: border-box;
+  border: 1pt solid #7a7b7d;
+  border-radius: 25px;
+  @include usualFlex();
+  text-transform: uppercase;
+  font-family: Nunito;
+  font-size: 10pt;
+  color: #7a7b7d;
+  cursor: pointer;
+  padding: 8px 30px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.EventGrid {
+  width: 90%;
+  height: 100%;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+.EventCard {
+  background-color: white;
+  color: white;
+  font-family: Nunito;
+  width: 400px;
+  height: 400px;
+  border-radius: 20px;
+  margin: 5px;
+  padding: 15px;
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: left;
+  overflow: hidden;
+  box-shadow: 0px 8px 11px rgb(0 0 0 / 25%);
+  cursor: pointer;
+
+  &:hover {
+    scale: 1.01;
   }
-
-
-.MainWrap{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100vw;
-    height: 100vh;
-    background-color: black;
-    
-}
-.HeaderDiv{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    background-color: black;
-   
-    
 }
 
-.BackButton{
-    z-index: 2;
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    @include usualFlex();
-    margin-left: 150px;
-    background-color: #8a8a8a;
-    transform: translateY(50px);
-    border-radius: 50%;
+.groupAVI {
+  background-color: white;
+  height: 44px;
+  width: 44px;
+  border-radius: 50%;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  box-shadow: 0px 8px 11px rbg(0 0 0 /25%);
 }
 
-.VideoDiv{
-    width: 100vw;
-    height: 300px;
-    @include usualFlex();
-    background-color: black;
-    
-    
+.eventCardFilter {
+  position: absolute;
+  background-color: white;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 40%,
+    rgba(0, 0, 0, 0.8666666667) 90%,
+    #000 100%
+  );
 }
 
-.VideoPlayer1{
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    opacity: .6;
-    filter: blur(100px);
+.groupInfo {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
-.VideoPlayer2{
-    mix-blend-mode: screen;
-    width: 1200px;
-    position: absolute;
-    opacity: 0.9;
+.eventDate {
+  font-weight: 700;
+  font-size: 18pt;
+  color: #fff;
+  align-self: center;
+  border-right: rgba(255, 255, 255, 0.4666666667) 1px solid;
+  padding-right: 15px;
+  text-transform: uppercase;
+  margin-right: 10px;
 }
 
-.ToggleTime{
-    width: 90%;
-    
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    height: auto;
-    padding-left: 10px;
-    margin-bottom: 15px;   
+.eventInfoColumn {
+  display: flex;
+  flex-direction: column;
 }
 
-.TimeButton{
-    
-  
-
-    z-index: 2;
-    width: auto;
-    height: 39px;
-    box-sizing: border-box;
-    border: 1pt solid $poshColor;
-    border-radius: 25px;
-    @include usualFlex();
-    text-transform: uppercase;
-    font-family: Nunito;
-    font-size: 10pt;
-    color: $poshColor;
-    cursor: pointer;
-    padding: 8px 30px;
-    outline: none;
-    
-    
-
+.eventInfoTitle {
+  font-weight: 600;
 }
 
-.TimeButtonSelected{
-    z-index: 2;
-    width: auto;
-    height: 39px;
-    box-sizing: border-box;
-    border: 1pt solid #7a7b7d;
-    border-radius: 25px;
-    @include usualFlex();
-    text-transform: uppercase;
-    font-family: Nunito;
-    font-size: 10pt;
-    color: #7a7b7d;
-    cursor: pointer;
-    padding: 8px 30px;
-    -webkit-tap-highlight-color: transparent;
-    
-    
+.eventInfoSubTitle {
+  font-family: Nunito;
+  font-weight: 200;
+  font-size: 15px;
 }
 
+//Loading Bar
 
-.EventGrid{
-    width: 90%;
-    height: 100%;
-    display: grid;
-    gap: 10px;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-   
-}
-
-.EventCard{
-    background-color: white;
-    color: white;
-    font-family: Nunito;
-    width: 400px;
-    height: 400px;
-    border-radius: 20px;
-    margin: 5px;
-    padding: 15px;
-    
-    background-size: cover;
-    background-position: center center;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: left;
-    overflow: hidden;
-    box-shadow: 0px 8px 11px rgb(0 0 0 / 25%);
-
-    cursor: pointer;
-
-    &:hover {
-        scale: 1.01;
+.LoadingDiv {
+  height: 100vh;
+  width: 100vw;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  @include inline-animation(3s) {
+    from {
+      opacity: 1;
+      background-color: black;
     }
-
-}
-
-
-
-.groupAVI{
-    background-color: white;
-    height: 44px;
-    width: 44px;
-    border-radius: 50%;
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    box-shadow: 0px 8px 11px rbg(0 0 0 /25%)
-}
-
-.eventCardFilter{
-    position: absolute;
-    background-color: white;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.8666666667) 90%, #000 100%);
-}
-
-.groupInfo{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    box-sizing: border-box;
-    
-}
-
-.eventDate{
-    
-    font-weight: 700;
-    font-size: 18pt;
-    color: #fff;
-    align-self: center;
-    border-right: rgba(255,255,255,.4666666667) 1px solid;
-    padding-right: 15px;
-    text-transform: uppercase;
-    margin-right: 10px;
-}
-
-.eventInfoColumn{
-    display: flex;
-    flex-direction: column;
-}
-
-.eventInfoTitle{
-    font-weight: 600;
-   
-}
-
-.eventInfoSubTitle{
-    
-    font-family: Nunito;
-    font-weight: 200;
-    font-size: 15px;
-}
-
-
-
-//Loading Bar 
-
-.LoadingDiv{
-    height: 100vh;
-    width: 100vw;
-    left: 0;
-    top: 0;
-    z-index: 3;
-    background-color: #000;
-    display: flex;
-    flex-direction: column;
-   @include inline-animation(3s){
-    from{
-        opacity: 1;
-        background-color: black;
+    to {
+      opacity: 0.1;
+      background-color: black;
     }
-    to{
-        opacity: 0.1;
-        background-color: black;
-        
-    }
-   }
+  }
 }
 
-.InnerLoadingWrap{
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translateX(-50%);
-    @include usualFlex();
-    flex-direction: column;
-    gap: 20px 20px;
-    
-
-
+.InnerLoadingWrap {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  @include usualFlex();
+  flex-direction: column;
+  gap: 20px 20px;
 }
 
-.LoadingHeader{
-    color: $poshColor;
-    font-family: Nunito;
+.LoadingHeader {
+  color: $poshColor;
+  font-family: Nunito;
 }
-
-
-
-// @media (max-width: 576){
-//     .EventGrid{
-//         grid-template-columns: repeat(1, 1fr);
-//     }
-// }
-// @media only screen and (max-width: 1000){
-//     .EventGrid{
-//         grid-template-columns: repeat(2, 1fr);
-//     }
-// }
-
-// @media only screen and (max-width: 1400){
-//     .EventGrid{
-//         grid-template-columns: repeat(3, 1fr);
-//     }
-// }
-
-// @media only screen and (max-width: 1800){
-//     .EventGrid{
-//         grid-template-columns: repeat(4, 1fr);
-//     }
-// }
-
-// @media only screen and (max-width: 2100){
-//     .EventGrid{
-//         grid-template-columns: repeat(5, 1fr);
-//     }
-// }
