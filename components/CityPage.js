@@ -7,52 +7,42 @@ import { FiArrowLeft } from "react-icons/fi";
 
 
 
-const CityPage = ({togglePage, pageState, events}) => {
+const CityPage = ({togglePage, pageState, events, geoOn}) => {
     const [timeFrame, setTimeFrame] = useState("Week");
-    // const [isLoading, setIsLoading] = useState(true)
     const {query} = useRouter();
+    const router = useRouter();
     const today = new Date();
     const todayDay = today.getDay();
 
 
-// useEffect(()=>{
-//     setIsLoading(true)
-//     const city = query.city
-    
-//         fetch(`/cityEvents?` + new URLSearchParams({
-//             city: city
-//         }))
-//        .then((res) => res.json())
-//        .then((json) => handleEvents(json))
-//        .then(() => setIsLoading(false))
-//        .catch(error => {
-//            console.log(error)
-       
-//        })
+useEffect(()=>{
+    return () =>{
+
+    }
   
     
-// },[])
+},[])
 const renderEvents = () => {    
-            console.log(query.city)
-            if (timeFrame == "Today"){
-                return (
-                    events.map((event)=>{
-                       
-                        const date = new Date(event.startUtc)
-                        const eventDay = date.getDay()
-                        if (todayDay == eventDay && event != null){
-                            return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today}/>
-                        }
-                        
+    const handleEventClick = () =>{
+        router.push('https://posh.vip/explore')
+    }
+            
+    if (timeFrame == "Today"){
+        return (
+            events.map((event)=>{      
+            const date = new Date(event.startUtc)
+            const eventDay = date.getDay()
+            if (todayDay == eventDay && event != null){
+                return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today} onClick = {handleEventClick}/>
+                }    
                     })
                 )
         //Aassuming that we are retrieving weekly events 
             }else{
                 return(
                     events.map((event)=>{
-                        
                         if(event != null){
-                        return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today}/>
+                        return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today} onClick = {handleEventClick}/>
                         }
                     })
                 )
@@ -61,32 +51,20 @@ const renderEvents = () => {
         
 }
 
-// const renderNearEvents = () =>{
-//     if (timeFrame == "Today"){
-//         return (
-//             events.map((event)=>{
-               
-//                 const date = new Date(event.startUtc)
-//                 const eventDay = date.getDay()
-//                 if (todayDay == eventDay && event != null){
-//                     return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today}/>
-//                 }
-                
-//             })
-//         )
-// //Aassuming that we are retrieving weekly events 
-//     }else{
-//         return(
-//             events.map((event)=>{
-                
-//                 if(event != null){
-//                 return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today}/>
-//                 }
-//             })
-//         )
-        
-//     }
-// }
+const handleBackClick = () =>{
+    router.replace({
+        query: {
+        c: "popular",
+        t: "",
+        p: "1",
+        city: ""}
+    });
+    togglePage(!pageState)
+}
+
+
+
+
 
   return (
     <div className = {styles.MainWrap}>
@@ -95,7 +73,7 @@ const renderEvents = () => {
         </video>
         <div className  = {styles.HeaderDiv}>
           
-          <div className = {styles.BackButton} onClick = {()=> togglePage(!pageState)}>
+          <div className = {styles.BackButton} onClick = {()=> handleBackClick()}>
             <FiArrowLeft size = "30px" color = "black"/>
           </div>
 
@@ -116,7 +94,7 @@ const renderEvents = () => {
         </div>
         
         <div className = {styles.EventGrid} >
-            {events ? renderEvents() :  <Loading/>}
+            {events ? renderEvents() :  <Loading message = {geoOn? "Finding events near you": "Please turn on geolocation"} />}
         </div>
        
     </div>

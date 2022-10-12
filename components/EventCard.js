@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '../styles/Events.module.scss'
 
-const EventCard = ({background, groupAVI, eventName, groupName, eventDate }) => {
+const EventCard = ({background, groupAVI, eventName, groupName, eventDate, onClick}) => {
 
   const date = new Date(eventDate)
   const eventDay = date.getDay()
@@ -38,7 +38,7 @@ const EventCard = ({background, groupAVI, eventName, groupName, eventDate }) => 
   }
 
   return (
-    <div style={{backgroundImage: "url(" + background + ")"}} className = {styles.EventCard} >
+    <div style={{backgroundImage: "url(" + background + ")"}} className = {styles.EventCard} onClick = {onClick} >
         
         <img src = {groupAVI} className = {styles.groupAVI}>
         </img>

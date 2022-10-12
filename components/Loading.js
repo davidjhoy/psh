@@ -1,13 +1,15 @@
 import styles from '../styles/Events.module.scss';
 import React from 'react'
 
-const Loading = () => {
+const Loading = ({message}) => {
+
+  
   return (
     <div className = {styles.LoadingDiv}>
         <div className = {styles.InnerLoadingWrap}>
-            <div className = {styles.LoadingHeader}>Finding the best events for you...</div>
+            <div className = {styles.LoadingHeader}></div>
             <div>
-                <div></div>
+                <div>{message}</div>
             </div>
         </div>
     </div>
