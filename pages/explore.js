@@ -5,16 +5,18 @@ import {useRouter} from 'next/router';
 import styles from '../styles/Home.module.scss'
 import { useEffect, useState } from 'react';
 import Snow from '../components/Confetti';
+
   
 export default function Explore() {
   const [renderCityPage, setRenderCityPage] = useState(false);
-  const [events, setEvents] = useState(""); 
-  const [eventsByCity, setEventsByCity] = useState({});
-  const [cityToCoordinateArray, setCityToCoordinateArray] = useState([]);
-  const [cities, setCities] = useState(new Set());
+  const [exploreEvents, setExploreEvents] = useState(""); 
+  // const [eventsByCity, setEventsByCity] = useState({});
+  // const [cityToCoordinateArray, setCityToCoordinateArray] = useState([]);
+  const [events, setEvents] = useState();
+  const [cities, setCities] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const {query} = useRouter();
   const router = useRouter();
-  let {query} = useRouter()
  
   useEffect(()=>{
         router.replace({
@@ -25,83 +27,82 @@ export default function Explore() {
          city: ""}
      });
 
-   setEvents("")
-   fetch('/v1/events')
-   .then((res) => res.json())
-   .then((json) => {
-       handleEvents(json)
+  //  fetch('/v1/events')
+  //  .then((res) => res.json())
+  //  .then((json) => {
+  //      handleEvents(json)
       
-   })
-   .then(() => setIsLoading(false))
-   .catch(error => {
-       console.log(error)
+  //  })
+  //  .then(()=> constructEventObject())
+  //  .then(() => setIsLoading(false))
+  //  .catch(error => {
+  //      console.log(error)
    
-   })
+  //  })
+  
+    fetch('/cityEvents')
+    .then((res) => res.json())
+    .then((json)=> handleEvents(json))
+    .then(()=> setCities(Object.keys(events)))
+    .then(()=>setIsLoading(false))
+    .catch(error => {console.log(error)})
+  
  }
-   
-
 ,[])
 
+
   const handleEvents = (events) =>{
-
-      setCities([])
       setEvents(events)
-      let coordinateArray = events.map((event)=>{
-        const Lat = event.location.coordinates[1]
-        const Long = event.location.coordinates[0]
-        return [Lat, Long]
-       
-      })
+      
 
-      let uniqueCoordinates = filterEventCoordinates(coordinateArray)
-      let fetchReturn = fetchCityNamesFromUniqueCoordinates(uniqueCoordinates)
-      
-      
+      // setCities(events.keys())
+      // console.log(events)
+  //     let coordinateArray = events.map((event)=>{
+  //       const Lat = event.location.coordinates[1]
+  //       const Long = event.location.coordinates[0]
+  //       return [Lat, Long]
+  //     })
+  //     let uniqueCoordinates = filterEventCoordinates(coordinateArray)
+  //     fetchCityNamesFromUniqueCoordinates(uniqueCoordinates)
       
   }
 
-  const filterEventCoordinates = (coordinateArray) => {
+  // const filterEventCoordinates = (coordinateArray) => {
    
-      return( Array.from(
-        new Map(coordinateArray.map((c) => [c.join(), c])).values()
-      ))
-  }
+  //     return( Array.from(
+  //       new Map(coordinateArray.map((c) => [c.join(), c])).values()
+  //     ))
+  // }
 
-  const fetchCityNamesFromUniqueCoordinates = (uniqueCoordinates) => {
+  // const fetchCityNamesFromUniqueCoordinates = (uniqueCoordinates) => {
 
-      const requestOptions = {
-        method: 'GET',
-      };
-      
-
-      setCityToCoordinateArray([])
-      
-     
-      uniqueCoordinates.forEach((coordinate, index) => {
-        //Iterate over each unique coordinate and make a fetch for the city name 
-     fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&apiKey=${process.env.NEXT_PUBLIC_GEOCODE_API}`, requestOptions)
-          .then(response => response.json())
-          .then(result => {
-            const city = result.features[0].properties.city
-            setCities(cities => new Set([...cities, city]))
+  //     const requestOptions = {
+  //       method: 'GET',
+  //     };
+  //     // setCityToCoordinateArray([])
+  //     uniqueCoordinates.forEach((coordinate, index) => {
+  //       //Iterate over each unique coordinate and make a fetch for the city name 
+  //    fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${coordinate[0]}&lon=${coordinate[1]}&apiKey=${process.env.NEXT_PUBLIC_GEOCODE_API}`, requestOptions)
+  //         .then(response => response.json())
+  //         .then(result => {
+  //           const city = result.features[0].properties.city
+  //           setCities(cities => new Set([...cities, city]))
             
-            //Rather than make a fetch for each event, I will create an array that matches each unique coordinate to a city
-            setCityToCoordinateArray(cityToCoordinateArray => [...cityToCoordinateArray, [coordinate[1], coordinate[0], city]])
+  //           //Rather than make a fetch for each event, I will create an array that matches each unique coordinate to a city
+  //           // setCityToCoordinateArray(cityToCoordinateArray => [...cityToCoordinateArray, [coordinate[1], coordinate[0], city]])
            
             
-          })
-          .catch(error => console.log('error', error))
+  //         })
+  //         .catch(error => console.log('error', error))
           
-      })
+  //     })
 
-  }
+  // }
 
-
-  const renderCities = (cities) =>{
+  const renderCities = () =>{
    
-    //Can't map over a Set so I need to convert the cities Set into an array. 
-    let cityArr = [...cities];
-    //Was having some issues with the "Near Me" Button loading first so I decided to add it here after the other buttons have been added to the city set
+   
+    let cityArr = [...new Set(cities)]
     if (cityArr.length > 0){
       cityArr.push("Near Me")
     }
@@ -125,9 +126,7 @@ export default function Explore() {
         })
     )
   }
-
-  
-  
+console.log(isLoading)
 
 
   return (
@@ -135,7 +134,7 @@ export default function Explore() {
     
     {renderCityPage ? 
     
-    <CityPage events = {events} togglePage = {setRenderCityPage} pageState = {renderCityPage}  city = {query.city}/>
+    <CityPage togglePage = {setRenderCityPage} pageState = {renderCityPage} cityEvents = {events}/>
     :
 
     <div className={styles.container}>
@@ -145,9 +144,6 @@ export default function Explore() {
         <meta name="plz hr me" content="Generated by create next app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-
-   
         <div className = {styles.CityClassContainer}>
           <div className = {styles.CityHeader}> WHERE ARE YOU LOOKING FOR EXPERIENCES?</div>
           <div className = {styles.CityListWrap}>

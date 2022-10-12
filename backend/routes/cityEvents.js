@@ -43,34 +43,39 @@ router.get('/', async (req, res) =>{
      // ****************************************************************************************************************************************************************************** 
      //*******************************************************************************************************************************************************************************
      //OPTION 2 -- more API calls but also more accurate
+     //This approach makes a call to the geoapify api for every element in the events array and only return events that match the city in the query params
+     //This approach will be accurate event if we include a button for NJ (as opposed to option1), however, it requires a lot more fetch requests. 
      const connection = db.getConnection()
-     let query = require('url').parse(req.url,true).query;
-     let city = query.city;
+    //  let query = require('url').parse(req.url,true).query;
+    //  let city = query.city;
      const collection  = connection.db.collection("events");
      const requestOptions = {
         method: 'GET',
       };
-
-    //   const filterEvents = (events) =>{
-    //     cityEvents = events.map((event)=>{
-                    
-    //         const parseCity = (eventCity) =>{
-    //             if (String(eventCity).toLowerCase() == String(city).toLowerCase()){
-    //                 return event;
-    //             }
-    //         }
-            
-    //         fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${event.location.coordinates[1]}&lon=${longitude = event.location.coordinates[0]}&apiKey=${process.env.NEXT_PUBLIC_GEOCODE_API}`, requestOptions)
-    //           .then(response => response.json())
-    //           .then(result => { parseCity(result.features[0].properties.city)})
-            
-                
-    //      })
-
-    //   }
       
+    const coordinates = await collection.distinct("location")
+    const uniqueCoordinates = coordinates.map((city) => {
+        return city.coordinates
+    })
+    const cityNames = await Promise.all(uniqueCoordinates.map(async (coordinate) =>{
+        const longitude = coordinate[0]
+        const latitude = coordinate[1]
+        return await fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=${process.env.NEXT_PUBLIC_GEOCODE_API}`, requestOptions)
+        .then(response => response.json())
+        .then(result => {return result.features[0].properties.city})
+    }))
 
-    const allEvents = collection.find({}).toArray(async function (error, result){
+    const cityNameEventObject = {}
+    cityNames.map((city)=>{
+        cityNameEventObject[city] = []
+    })
+
+
+
+
+
+    
+    collection.find({}).toArray(async function (error, result){
                 if (error){
                     res.status(400).send("Error Fetching!")
                 }else{
@@ -82,17 +87,12 @@ router.get('/', async (req, res) =>{
                             .then(response => response.json())
                             .then(result => {
                             const eventCity = result.features[0].properties.city
-                            
-                            if (eventCity == city){
-                                return event
-                            }else{
-                                return null
-                            }
+                            cityNameEventObject[eventCity].push(event)
                         })
 
                         })
                     );
-                    res.json(filteredVenues)
+                    res.json(cityNameEventObject)
                 }
               
             })

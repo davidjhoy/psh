@@ -2,23 +2,61 @@ import React, {useState, useEffect} from 'react';
 import styles from '../styles/Events.module.scss';
 import EventCard from '../components/EventCard';
 import Loading from '../components/Loading';
+import {useRouter} from 'next/router';
 import { FiArrowLeft } from "react-icons/fi";
 
-const CityPage = ({events, togglePage, pageState, city}) => {
+
+
+const CityPage = ({togglePage, pageState, events}) => {
     const [timeFrame, setTimeFrame] = useState("Week");
+    const [isLoading, setIsLoading] = useState(true)
+    const {query} = useRouter();
     const today = new Date();
     const todayDay = today.getDay();
 
-    console.log(events)
+  
+
+// const handleEvents = (events) =>{
+//     let filteredEvents = events.filter((e)=>{
+//         return e != null
+//     })
+//     setEvents(filteredEvents)
+// }
+// useEffect(()=>{
+//     setIsLoading(true)
+//     const city = query.city
     
-const renderEvents = (events) => {    
+//         fetch(`/cityEvents?` + new URLSearchParams({
+//             city: city
+//         }))
+//        .then((res) => res.json())
+//        .then((json) => handleEvents(json))
+//        .then(() => setIsLoading(false))
+//        .catch(error => {
+//            console.log(error)
+       
+//        })
+    
+    
+// },[])
+
+useEffect(()=>{
+    setIsLoading(true)
+    if(events){
+        setIsLoading(false)
+    }
+},[])
+
+
+
+const renderEvents = () => {    
             if (timeFrame == "Today"){
                 return (
                     events.map((event)=>{
                        
                         const date = new Date(event.startUtc)
                         const eventDay = date.getDay()
-                        if (todayDay == eventDay){
+                        if (todayDay == eventDay && event != null){
                             return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today}/>
                         }
                         
@@ -28,9 +66,10 @@ const renderEvents = (events) => {
             }else{
                 return(
                     events.map((event)=>{
-                        const Lat = event.location.coordinates[1]
-                        const Long = event.location.coordinates[0] 
+                        
+                        if(event != null){
                         return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today}/>
+                        }
                     })
                 )
                 
@@ -70,7 +109,7 @@ const renderEvents = (events) => {
         </div>
         
         <div className = {styles.EventGrid} >
-            {events? renderEvents(events): <div></div>}
+            {isLoading ?  <div></div> : renderEvents(events)}
         </div>
         <Loading/>
     </div>
