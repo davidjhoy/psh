@@ -7,7 +7,7 @@ const db = require('../db')
 router.get('/', async (req, res) =>{
     try{
 
-        //OPTION 1 -- More Efficient with API call but less correct 
+        //OPTION 1 -- More Efficient with API call but less correct || Using this for the "Near Me" fetch instead. 
         // const connection = db.getConnection()
         // let query = require('url').parse(req.url,true).query;
         // let city = query.city;
@@ -18,8 +18,8 @@ router.get('/', async (req, res) =>{
         // .then((json)=> {
         //     let longitude = parseFloat(json.results[0].lon)
         //     let latitude = parseFloat(json.results[0].lat)
-            
-            
+
+        
         //     //I am using the geocode api to find a random coordinate for each inputted city then i am filtering the events based on whether their coordinates fall within a distance range from those coordinates. 
         //     //The range is +- 0.8 which equates to about 35-50 miles depending on whether its lat or long and the position on earth for lat
         //     //I am comfortable using this estimate since NYC is about 13 miles long and about 4 miles wide but LA is about 40X30 miles
@@ -45,9 +45,8 @@ router.get('/', async (req, res) =>{
      //OPTION 2 -- more API calls but also more accurate
      //This approach makes a call to the geoapify api for every element in the events array and only return events that match the city in the query params
      //This approach will be accurate event if we include a button for NJ (as opposed to option1), however, it requires a lot more fetch requests. 
+     //Here I am creating one object to send to the fronend with each unique city name as a key and the events in that city as values. 
      const connection = db.getConnection()
-    //  let query = require('url').parse(req.url,true).query;
-    //  let city = query.city;
      const collection  = connection.db.collection("events");
      const requestOptions = {
         method: 'GET',
@@ -69,11 +68,6 @@ router.get('/', async (req, res) =>{
     cityNames.map((city)=>{
         cityNameEventObject[city] = []
     })
-
-
-
-
-
     
     collection.find({}).toArray(async function (error, result){
                 if (error){

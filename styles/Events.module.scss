@@ -251,9 +251,11 @@ $poshColor: #fc0;
    @include inline-animation(3s){
     from{
         opacity: 1;
+        background-color: black;
     }
     to{
-        opacity: 0;
+        opacity: 0.5;
+        background-color: black;
         
     }
    }

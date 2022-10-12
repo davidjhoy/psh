@@ -9,19 +9,12 @@ import { FiArrowLeft } from "react-icons/fi";
 
 const CityPage = ({togglePage, pageState, events}) => {
     const [timeFrame, setTimeFrame] = useState("Week");
-    const [isLoading, setIsLoading] = useState(true)
+    // const [isLoading, setIsLoading] = useState(true)
     const {query} = useRouter();
     const today = new Date();
     const todayDay = today.getDay();
 
-  
 
-// const handleEvents = (events) =>{
-//     let filteredEvents = events.filter((e)=>{
-//         return e != null
-//     })
-//     setEvents(filteredEvents)
-// }
 // useEffect(()=>{
 //     setIsLoading(true)
 //     const city = query.city
@@ -36,20 +29,11 @@ const CityPage = ({togglePage, pageState, events}) => {
 //            console.log(error)
        
 //        })
-    
+  
     
 // },[])
-
-useEffect(()=>{
-    setIsLoading(true)
-    if(events){
-        setIsLoading(false)
-    }
-},[])
-
-
-
 const renderEvents = () => {    
+            console.log(query.city)
             if (timeFrame == "Today"){
                 return (
                     events.map((event)=>{
@@ -75,11 +59,34 @@ const renderEvents = () => {
                 
             }
         
-           
-            
-          
 }
 
+// const renderNearEvents = () =>{
+//     if (timeFrame == "Today"){
+//         return (
+//             events.map((event)=>{
+               
+//                 const date = new Date(event.startUtc)
+//                 const eventDay = date.getDay()
+//                 if (todayDay == eventDay && event != null){
+//                     return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today}/>
+//                 }
+                
+//             })
+//         )
+// //Aassuming that we are retrieving weekly events 
+//     }else{
+//         return(
+//             events.map((event)=>{
+                
+//                 if(event != null){
+//                 return <EventCard key = {event._id} background={event.flyer} groupAVI = {event.groupAvi} eventName = {event.name} groupName = {event.groupName} eventDate = {event.startUtc} today = {today}/>
+//                 }
+//             })
+//         )
+        
+//     }
+// }
 
   return (
     <div className = {styles.MainWrap}>
@@ -109,9 +116,9 @@ const renderEvents = () => {
         </div>
         
         <div className = {styles.EventGrid} >
-            {isLoading ?  <div></div> : renderEvents(events)}
+            {events ? renderEvents() :  <Loading/>}
         </div>
-        <Loading/>
+       
     </div>
   )
 

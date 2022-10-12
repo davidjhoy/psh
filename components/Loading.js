@@ -7,7 +7,7 @@ const Loading = () => {
         <div className = {styles.InnerLoadingWrap}>
             <div className = {styles.LoadingHeader}>Finding the best events for you...</div>
             <div>
-                <div>------</div>
+                <div></div>
             </div>
         </div>
     </div>

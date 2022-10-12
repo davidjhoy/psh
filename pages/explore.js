@@ -9,15 +9,17 @@ import Snow from '../components/Confetti';
   
 export default function Explore() {
   const [renderCityPage, setRenderCityPage] = useState(false);
-  const [exploreEvents, setExploreEvents] = useState(""); 
-  // const [eventsByCity, setEventsByCity] = useState({});
-  // const [cityToCoordinateArray, setCityToCoordinateArray] = useState([]);
-  const [events, setEvents] = useState();
-  const [cities, setCities] = useState();
+  const [nearMeEvents, setNearMeEvents] = useState()
   const [isLoading, setIsLoading] = useState(true);
   const {query} = useRouter();
   const router = useRouter();
+  const [events, setEvents] = useState();
  
+  // const [eventsByCity, setEventsByCity] = useState({});
+  // const [cityToCoordinateArray, setCityToCoordinateArray] = useState([]);
+  // const [exploreEvents, setExploreEvents] = useState(""); 
+  // const [cities, setCities] = useState();
+
   useEffect(()=>{
         router.replace({
          query: {
@@ -42,17 +44,28 @@ export default function Explore() {
   
     fetch('/cityEvents')
     .then((res) => res.json())
-    .then((json)=> handleEvents(json))
-    .then(()=> setCities(Object.keys(events)))
+    .then((json)=> setEvents(json))
     .then(()=>setIsLoading(false))
     .catch(error => {console.log(error)})
-  
+    
+    navigator.geolocation.getCurrentPosition(function(position){
+            const longitude = position.coords.longitude
+            const latitude = position.coords.latitude
+            fetch(`/coordEvents?` + new URLSearchParams({
+              latitude: latitude,
+              longitude: longitude
+            }))
+            .then(response => response.json())
+            .then(result => {setNearMeEvents(result)
+        })
+  })
+
  }
 ,[])
 
 
-  const handleEvents = (events) =>{
-      setEvents(events)
+  // const handleEvents = (events) =>{
+  //     setEvents(events)
       
 
       // setCities(events.keys())
@@ -65,7 +78,7 @@ export default function Explore() {
   //     let uniqueCoordinates = filterEventCoordinates(coordinateArray)
   //     fetchCityNamesFromUniqueCoordinates(uniqueCoordinates)
       
-  }
+  // }
 
   // const filterEventCoordinates = (coordinateArray) => {
    
@@ -101,7 +114,7 @@ export default function Explore() {
 
   const renderCities = () =>{
    
-   
+    let cities = Object.keys(events)
     let cityArr = [...new Set(cities)]
     if (cityArr.length > 0){
       cityArr.push("Near Me")
@@ -119,14 +132,11 @@ export default function Explore() {
         setRenderCityPage(!renderCityPage)
       }
           return(
-            //So I can use
             <CityButton text = {city} childNumber = {index} key = {city} handleClick = {handleClick}/>
-            
           )
         })
     )
   }
-console.log(isLoading)
 
 
   return (
@@ -134,7 +144,7 @@ console.log(isLoading)
     
     {renderCityPage ? 
     
-    <CityPage togglePage = {setRenderCityPage} pageState = {renderCityPage} cityEvents = {events}/>
+    <CityPage togglePage = {setRenderCityPage} pageState = {renderCityPage} events = {query.city == "Near Me" ? nearMeEvents : events[query.city]}/>
     :
 
     <div className={styles.container}>
@@ -148,7 +158,7 @@ console.log(isLoading)
           <div className = {styles.CityHeader}> WHERE ARE YOU LOOKING FOR EXPERIENCES?</div>
           <div className = {styles.CityListWrap}>
          
-            {isLoading ? <div> Loading</div>   : renderCities(cities)}
+            {isLoading ? <div></div>   : renderCities()}
           
           </div>
         </div>

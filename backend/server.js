@@ -19,6 +19,9 @@ app.prepare().then(() => {
   const cityEventsRouter = require('./routes/cityEvents')
   server.use('/cityEvents', cityEventsRouter)
 
+  const coordEventsRouter = require('./routes/coordEvents')
+  server.use('/coordEvents', coordEventsRouter)
+
   db.connectToDB()
   const connection = db.getConnection()
   // mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser: true }).then(
