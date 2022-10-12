@@ -68,8 +68,7 @@ const handleBackClick = () =>{
 
   return (
     <div className = {styles.MainWrap}>
-        <video  className = {styles.VideoPlayer1} autoPlay playsInline loop width = "1200" height = "600" type = "video/mp4">
-                  <source src = "/wtw.mp4"></source>
+        <video  className = {styles.VideoPlayer1} autoPlay playsInline loop width = "1200" height = "600" type = "video/mp4" src = "https://posh-b2.s3.us-east-2.amazonaws.com/meta+(1).mp4">
         </video>
         <div className  = {styles.HeaderDiv}>
           
