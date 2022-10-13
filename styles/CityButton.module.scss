@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner&family=Nunito:wght@600&family=Quicksand:wght@300;400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner&family=Nunito:wght@400&family=Quicksand:wght@300;400&display=swap");
 @mixin inline-animation($duration) {
   $name: inline-#{unique-id()};
   @keyframes #{$name} {
@@ -23,15 +23,19 @@
   padding: 5% 10% 5% 10%;  
   justify-content: center;
   background-color: transparent;
-  font-family: "Edu QLD Beginner", cursive;
   font-family: "Nunito", sans-serif;
-  font-family: "Quicksand", sans-serif;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 5px;
   font-size: 1.2rem;
   text-transform: uppercase;
   color: #fc0;
   opacity: 0;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0 25px -2px, 0 0 14px 0px inset !important;
+
+  }
 
   @include inline-animation(2s) {
     from {

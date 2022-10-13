@@ -1,4 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Edu+QLD+Beginner&family=Nunito:wght@500&family=Quicksand:wght@300;400&display=swap");
+@mixin inline-animation($duration) {
+  $name: inline-#{unique-id()};
+  @keyframes #{$name} {
+    @content;
+  }
+  animation-name: $name;
+  animation-duration: $duration;
+  animation-iteration-count: 1;
+  animation-timing-function: ease;
+  animation-fill-mode: forwards;
+  animation-fill-mode: normal;
+  animation-delay: 0s;
+}
 .container {
   width: 100%;
   min-width: 100vw;
@@ -15,6 +28,7 @@
 }
 
 .CityClassContainer {
+  position: fixed;
   display: flex;
   flex-direction: column;
   gap: 70px;
@@ -24,6 +38,7 @@
 
 .CityListWrap {
   max-width: 100%;
+  min-height: 500px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -31,6 +46,7 @@
 }
 
 .CityHeader {
+  position: relative;
   color: #fc0;
   font-size: 1.5rem;
   text-align: center;
@@ -38,6 +54,16 @@
   margin-top: 5px;
   font-family: "Nunito", sans-serif;
   font-weight: 300;
+  @include inline-animation(2s) {
+    from {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0px);
+      opacity: 1;
+    }
+  }
 }
 
 .entryPath {
