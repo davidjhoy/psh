@@ -12,11 +12,15 @@
 }
 
 .CityButton {
-  width: 730px;
-  height: 114px;
+  width: 60vw;
+  max-width: 500px;
+  height: 5rem;
   border-radius: 9px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5% 10% 5% 10%;  
   justify-content: center;
   background-color: transparent;
   font-family: "Edu QLD Beginner", cursive;
@@ -24,7 +28,7 @@
   font-family: "Quicksand", sans-serif;
   font-weight: 600;
   letter-spacing: 5px;
-  font-size: 20px;
+  font-size: 1.2rem;
   text-transform: uppercase;
   color: #fc0;
   opacity: 0;

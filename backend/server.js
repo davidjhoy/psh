@@ -19,7 +19,6 @@ app.prepare().then(() => {
 
   db.connectToDB();
   const connection = db.getConnection();
- 
 
   server.get("/v1/events", (req, res) => {
     const collection = connection.db.collection("events");
